@@ -3,6 +3,9 @@ from random import *
 import pyttsx3
 engine = pyttsx3.init()
 
+#uncomment this line to mute it
+#engine.setProperty("volume",0)
+
 print('''Key:
 TWSS = Tall White Square Solid
 TWSH = Tall White Square Hollow
@@ -42,6 +45,7 @@ SBCH = ["Short", "Black", "Circular", "Hollow"]
 emptySpace = "    "
 
 pieces = [TWSS, TWSH, TWCS, TWCH, TBSS, TBSH, TBCS, TBSS, SWSS, SWSH, SWCS, SBSS, SBSH, SBCS, SBCH]
+piecesPlayed = "hi"
 
 #board looks like this:
 '''
@@ -80,14 +84,20 @@ print('''
 4     |      |      |     
 ''')
 
-print("For instance, if you wanted to put a TWSS piece in the top right, you would type \"TWSS d1\".")
-engine.say("For instance, if you wanted to put a TWSS piece in the top right, you would type TWSS d1.")
+print("For instance, if you wanted to put a TWSS piece in the top right, you would type \"TWSS\", then \"d1\".")
+engine.say("For instance, if you wanted to put a TWSS piece in the top right, you would type TWSS, then d1.")
 engine.runAndWait()
-visualBoard = board[0] + " | " + board[1] + " | " + board[2] + " | " + board[3] + "\n" + board[4] + " | " + board[5] + " | " + board[6] + " | " + board[7] + "\n" + board[8] + " | " + board[9] + " | " + board[10] + " | " + board[11] + "\n" + board[12] + " | " + board[13] + " | " + board[14] + " | " + board[15]
-
+def updateVisualBoard():
+    global visualBoard
+    visualBoard = board[0] + " | " + board[1] + " | " + board[2] + " | " + board[3] + "\n" + board[4] + " | " + board[5] + " | " + board[6] + " | " + board[7] + "\n" + board[8] + " | " + board[9] + " | " + board[10] + " | " + board[11] + "\n" + board[12] + " | " + board[13] + " | " + board[14] + " | " + board[15]
+updateVisualBoard()
 won = False
 
-def checkForWin():
+print("If you don't say a valid piece or coordinate, you will lose your turn. You may only play each piece once.")
+engine.say("If you don't say a valid piece or coordinate, you will lose your turn. You may only play each piece once.")
+engine.runAndWait()
+
+def checkForWins():
     if rowOne[0] != emptySpace and rowOne[1] != emptySpace and rowOne[2] != emptySpace and rowOne[3] != emptySpace:
         if rowOne[0[0]] == rowOne[0[1]] == rowOne[0[2]] == rowOne[0[3]]:
             print("There is a win in row one.")
@@ -299,4 +309,53 @@ def checkForWin():
             engine.runAndWait()
             won = True
 
-checkForWin()
+while True:
+    engine.say("Player 1, what piece do you want to play?")
+    engine.runAndWait()
+    playerPiece = input("Player 1, what piece do you want to play? ").upper()
+    print(playerPiece)
+    if playerPiece != "TWSS" and playerPiece != "TWSH" and playerPiece != "TWCS" and playerPiece != "TWCH" and playerPiece != "TBSS" and playerPiece != "TBSH" and playerPiece != "TBCS" and playerPiece != "TBSS" and playerPiece != "SWSS" and playerPiece != "SWSH" and playerPiece != "SWCS" and playerPiece != "SBSS" and playerPiece != "SBSH" and playerPiece != "SBCS" and playerPiece != "SBCH" and playerPiece not in piecesPlayed:
+        print("I warned you, you lose your turn now.")
+        engine.say("I warned you, you lose your turn now.")
+        engine.runAndWait()
+    else:
+        engine.say("Player 1, where do you want to put your piece?")
+        engine.runAndWait()
+        playerPlace = input("Player 1, where do you want to put your piece? ").lower()
+        if playerPlace == "a1":
+            board[0] = playerPiece
+        elif playerPlace == "a2":
+            board[1] = playerPiece
+        elif playerPlace == "a3":
+            board[2] = playerPiece
+        elif playerPlace == "a4":
+            board[3] = playerPiece
+        elif playerPlace == "b1":
+            board[4] = playerPiece
+        elif playerPlace == "b2":
+            board[5] = playerPiece
+        elif playerPlace == "b3":
+            board[6] = playerPiece
+        elif playerPlace == "b4":
+            board[7] = playerPiece
+        elif playerPlace == "c1":
+            board[8] = playerPiece
+        elif playerPlace == "c2":
+            board[9] = playerPiece
+        elif playerPlace == "c3":
+            board[10] = playerPiece
+        elif playerPlace == "c4":
+            board[11] = playerPiece
+        elif playerPlace == "d1":
+            board[12] = playerPiece
+        elif playerPlace == "d2":
+            board[13] = playerPiece
+        elif playerPlace == "d3":
+            board[14] = playerPiece
+        elif playerPlace == "d4":
+            board[15] = playerPiece
+
+        updateVisualBoard()
+        print(visualBoard)
+        checkForWins()
+        piecesPlayed += playerPiece
